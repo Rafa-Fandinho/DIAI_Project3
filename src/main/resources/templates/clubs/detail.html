@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
+<head>
+    <meta charset="UTF-8">
+    <title>Club Detail</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<h1 th:text="${club.name}"></h1>
+<p th:text="${club.description}"></p>
+<p th:text="${club.category}"></p>
+
+<a th:href="@{/clubs/{id}/events/new(id=${club.id})}">Create Event</a>
+
+<h2>Events</h2>
+
+<table>
+    <tbody>
+    <tr th:each="event : ${club.events}">
+        <td>
+            <a th:href="@{/clubs/{clubId}/events/{eventId}(clubId=${club.id}, eventId=${event.id})}"
+               th:text="${event.name}"></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

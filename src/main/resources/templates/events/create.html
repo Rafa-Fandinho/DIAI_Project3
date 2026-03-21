@@ -1,0 +1,53 @@
+<!-- @thymesVar id="event" type="pt.unl.fct.iadi.novaevents.controller.dto.CreateEventRequest" -->
+<!-- @thymesVar id="clubId" type="java.lang.Long" -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Event</title>
+</head>
+<body>
+
+<h1> Create Event</h1>
+
+<form th:action="@{/clubs/{clubId}/events(clubId=${clubId})}"
+      th:object="${event}"
+      method="post">
+
+    <div>
+        <label for="name">Name:</label>
+        <input id="name" type="text" th:field="*{name}" />
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+
+    <div>
+        <label for="date">Date:</label>
+        <input id="date" type="date" th:field="*{date}" />
+        <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+    </div>
+
+    <div>
+        <label for="type">Type:</label>
+        <select id="type" th:field="*{type}">
+            <option th:each="t : ${T(pt.unl.fct.iadi.novaevents.model.EventType).values()}"
+                    th:value="${t}"
+                    th:text="${t}">
+            </option>
+        </select>
+        <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+    </div>
+
+    <div>
+        <label for="location">Location:</label>
+        <input id="location" type="text" th:field="*{location}" />
+    </div>
+
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="description" th:field="*{description}"></textarea>
+    </div>
+
+    <button type="submit">Create</button>
+</form>
+</body>
+</html>

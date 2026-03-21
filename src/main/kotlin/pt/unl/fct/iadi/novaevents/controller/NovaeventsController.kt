@@ -8,7 +8,6 @@ import pt.unl.fct.iadi.novaevents.controller.dto.CreateEventRequest
 import pt.unl.fct.iadi.novaevents.model.EventType
 import pt.unl.fct.iadi.novaevents.service.EventAlreadyExistsException
 import pt.unl.fct.iadi.novaevents.service.NovaeventsService
-import java.net.URI
 import java.time.LocalDate
 
 @Controller
@@ -35,12 +34,14 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
 
     override fun showCreateForm(clubId: Long, model: Model): String {
         model.addAttribute("event", CreateEventRequest( "", LocalDate.now(), null, EventType.WORKSHOP, null))
+        model.addAttribute("clubId",clubId)
         return "events/create"
     }
 
     override fun createEvent(clubId: Long, @Valid request: CreateEventRequest, bindingResult: BindingResult, model: Model): String {
         if(bindingResult.hasErrors()){
             model.addAttribute("event", request)
+            model.addAttribute("clubId", clubId)
             return "events/create"
         }
         val eventId = try {
@@ -53,13 +54,26 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
     }
 
     override fun showEditForm(clubId: Long, eventId: Long, model: Model): String {
-        model.addAttribute("event", service.viewEventDetails(clubId, eventId))
+        val event = service.viewEventDetails(clubId,eventId)
+
+        val form = CreateEventRequest(
+            name = event.name,
+            date = event.date,
+            location = event.location,
+            type = event.type,
+            description = event.description
+        )
+        model.addAttribute("event", form)
+        model.addAttribute("clubId", clubId)
+        model.addAttribute("eventId", eventId)
         return "events/edit"
     }
 
     override fun editEvent(clubId: Long, eventId: Long, @Valid request: CreateEventRequest, bindingResult: BindingResult, model: Model): String{
         if(bindingResult.hasErrors()){
             model.addAttribute("event", request)
+            model.addAttribute("clubId", clubId)
+            model.addAttribute("eventId", eventId)
             return "events/edit"
         }
         try {

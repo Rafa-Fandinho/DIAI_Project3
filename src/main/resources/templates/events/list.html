@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Events List</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<h1>All Events</h1>
+
+<form method="get" th:action="@{/events}">
+    <div>
+        <label for="clubId">Name:</label>
+        <input id="clubId" type="text" name="clubId" placeholder="Club ID" />
+    </div>
+    <div>
+        <label for="from">Name:</label>
+        <input id="from" type="date" name="from" />
+    </div>
+    <div>
+        <label for="to">Name:</label>
+        <input id="to" type="date" name="to" />
+    </div>
+
+    <div>
+        <label for="type">Type:</label>
+        <select id="type" name="type">
+            <option value="">All</option>
+            <option th:each="t : ${T(pt.unl.fct.iadi.novaevents.model.EventType).values()}"
+                    th:value="${t}"
+                    th:text="${t}">
+            </option>
+        </select>
+    </div>
+
+    <button type="submit">Filter</button>
+</form>
+
+<table>
+    <tbody>
+    <tbody>
+    <tr th:each="event : ${events}">
+        <td th:text="${event.name}"></td>
+
+        <td>
+            <a th:href="@{/clubs/{clubId}/events/{eventId}(clubId=${event.clubId}, eventId=${event.id})}">
+                View
+            </a>
+        </td>
+
+        <td>
+            <a th:href="@{/clubs/{clubId}/events/{eventId}/edit(clubId=${event.clubId}, eventId=${event.id})}">
+                Edit
+            </a>
+        </td>
+
+        <td>
+            <a th:href="@{/clubs/{clubId}/events/{eventId}/delete(clubId=${event.clubId}, eventId=${event.id})}">
+                Delete
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

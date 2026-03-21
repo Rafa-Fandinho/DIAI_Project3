@@ -1,0 +1,30 @@
+<!-- @thymesVar id="clubs" type="List<pt.unl.fct.iadi.novaevents.controller.dto.ClubResponse>" -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Clubs List</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<h1>Campus Clubs</h1>
+
+<table>
+    <tbody>
+    <tr th:each="club : ${clubs}">
+        <td>
+            <a th:href="@{/clubs/{id}(id=${club.id})}"
+               th:text="${club.name}"></a>
+        </td>
+        <td>
+            <details>
+                <summary>Description</summary>
+                <span th:text="${club.description}"></span>
+            </details>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

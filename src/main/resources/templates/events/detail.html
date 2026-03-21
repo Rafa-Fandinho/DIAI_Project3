@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Detail</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<h1 th:text="${event.name}"></h1>
+
+<p th:text="${event.date}"></p>
+<p th:text="${event.location}"></p>
+<p th:text="${event.type}"></p>
+<p th:text="${event.description}"></p>
+<p th:text="${event.clubName}"></p>
+
+<a th:href="@{/clubs/{clubId}/events/{eventId}/edit(clubId=${event.clubId}, eventId=${event.id})}">
+    Edit
+</a>
+
+<a th:href="@{/clubs/{clubId}/events/{eventId}/delete(clubId=${event.clubId}, eventId=${event.id})}">
+    Delete
+</a>
+</body>
+</html>
