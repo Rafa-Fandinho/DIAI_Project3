@@ -6,6 +6,7 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import pt.unl.fct.iadi.novaevents.controller.dto.CreateEventRequest
 import pt.unl.fct.iadi.novaevents.model.EventType
+import pt.unl.fct.iadi.novaevents.service.EventAlreadyExistsException
 import pt.unl.fct.iadi.novaevents.service.NovaeventsService
 import java.net.URI
 import java.time.LocalDate
@@ -42,7 +43,12 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
             model.addAttribute("event", request)
             return "events/create"
         }
-        val eventId = service.createEvent(clubId, request)
+        val eventId = try {
+            service.createEvent(clubId, request)
+        } catch (e: EventAlreadyExistsException) {
+            bindingResult.rejectValue("name", "error.name", e.message!!)
+            return "events/create"
+        }
         return "redirect:/clubs/$clubId/events/$eventId"
     }
 
@@ -56,7 +62,12 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
             model.addAttribute("event", request)
             return "events/edit"
         }
-        service.editEvent(clubId, eventId, request)
+        try {
+            service.editEvent(clubId, eventId, request)
+        } catch (e: EventAlreadyExistsException) {
+            bindingResult.rejectValue("name", "error.name", e.message!!)
+            return "events/edit"
+        }
         return "redirect:/clubs/$clubId/events/$eventId"
     }
 
