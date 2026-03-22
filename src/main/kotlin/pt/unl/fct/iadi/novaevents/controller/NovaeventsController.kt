@@ -22,8 +22,9 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
         return "clubs/detail"
     }
 
-    override fun listEvents(type: EventType?, clubId: Long?, from: LocalDate?, to: LocalDate?, model: Model): String {
-        model.addAttribute("events", service.listEvents(type, clubId, from, to))
+    override fun listEvents(type: EventType?, clubId: Long?, model: Model): String {
+        model.addAttribute("events", service.listEvents(type, clubId))
+        model.addAttribute("clubs", service.listClubs())
         return "events/list"
     }
 

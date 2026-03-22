@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Event</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<h1>Confirm Delete</h1>
+
+<p th:text="${event.name}"></p>
+
+<form th:action="@{/clubs/{clubId}/events/{eventId}/delete(clubId=${event.clubId}, eventId=${event.id})}"
+      method="post">
+
+    <input type="hidden" name="_method" value="delete"/>
+
+    <button type="submit">Confirm</button>
+</form>
+
+<a th:href="@{/clubs/{clubId}(clubId=${event.clubId})}">Cancel</a>
+</body>
+</html>

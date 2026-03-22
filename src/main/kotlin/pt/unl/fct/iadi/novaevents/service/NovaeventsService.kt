@@ -51,13 +51,11 @@ class NovaeventsService {
         )
     }
 
-    fun listEvents(type: EventType?, clubId: Long?, from: LocalDate?, to: LocalDate?): List<EventResponse> {
+    fun listEvents(type: EventType?, clubId: Long?): List<EventResponse> {
         return events
             .asSequence()
             .filter { type == null || it.type == type }
             .filter { clubId == null || it.clubId == clubId }
-            .filter { from == null || !it.date.isBefore(from) }
-            .filter { to == null || !it.date.isAfter(to) }
             .map { it.toResponse() }
             .toList()
     }

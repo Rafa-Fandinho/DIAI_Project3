@@ -28,8 +28,6 @@ interface NovaeventsAPI {
     fun listEvents(
         @RequestParam(required = false) type: EventType?,
         @RequestParam(required = false) clubId: Long?,
-        @RequestParam(required = false) from: LocalDate?,
-        @RequestParam(required = false) to: LocalDate?,
         model: Model
     ): String
 
