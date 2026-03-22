@@ -77,7 +77,7 @@ interface NovaeventsAPI {
         model: Model
     ): String
 
-    @DeleteMapping("clubs/{clubId}/events/{eventId}/delete")
+    @DeleteMapping("/clubs/{clubId}/events/{eventId}/delete")
     fun deleteEvent(
         @PathVariable clubId: Long,
         @PathVariable eventId: Long,

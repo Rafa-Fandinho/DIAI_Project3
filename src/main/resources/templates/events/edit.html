@@ -11,7 +11,7 @@
 
 <h1> Create Event</h1>
 
-<form th:action="@{/clubs/{clubId}/events/{eventId}(clubId=${clubId})}"
+<form th:action="@{/clubs/{clubId}/events/{eventId}(clubId=${clubId}, eventId=${eventId})}"
       th:object="${event}"
       method="post">
 

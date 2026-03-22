@@ -49,6 +49,7 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
             service.createEvent(clubId, request)
         } catch (e: EventAlreadyExistsException) {
             bindingResult.rejectValue("name", "error.name", "An event with this name already exist")
+            model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
             return "events/create"
         }
@@ -82,10 +83,12 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
             service.editEvent(clubId, eventId, request)
         } catch (e: EventAlreadyExistsException) {
             bindingResult.rejectValue("name", "error.name", "An event with this name already exist")
+            model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
+            model.addAttribute("eventId", eventId)
             return "events/edit"
         }
-        return "redirect:/clubs/$clubId"
+        return "redirect:/clubs/$clubId/events/$eventId"
     }
 
     override fun confirmDelete(clubId: Long, eventId: Long, model: Model): String {
