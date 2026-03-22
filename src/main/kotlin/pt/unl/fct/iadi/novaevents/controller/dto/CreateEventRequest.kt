@@ -6,7 +6,7 @@ import pt.unl.fct.iadi.novaevents.model.EventType
 import java.time.LocalDate
 
 data class CreateEventRequest(
-    @field:NotBlank(message = "Name cannot be blank")
+    @field:NotBlank(message = "Name is required")
     val name : String,
     @field:NotNull(message = "Date is required")
     val date : LocalDate,

@@ -25,12 +25,15 @@ class NovaeventsService {
     )
 
     private val events = mutableListOf(
-        Event(1, 1, "Chess Tournament", LocalDate.now().plusDays(5), "Room A", EventType.COMPETITION, "Open tournament"),
-        Event(2, 2, "Robotics Workshop", LocalDate.now().plusDays(10), "Lab 1", EventType.WORKSHOP, "Build robots"),
-        Event(3, 3, "Photo Walk", LocalDate.now().plusDays(7), null, EventType.SOCIAL, "Outdoor photography"),
+        Event(1, 1, "Beginner's Chess Workshop", LocalDate.now(), "Class 1", EventType.WORKSHOP, null),
+        Event(2, 1, "Spring Chess Tournament", LocalDate.now(), "Class 1", EventType.COMPETITION, null),
+        Event(3, 2, "Robotics 101", LocalDate.now(), "Room 4", EventType.WORKSHOP, null),
+        Event(4, 3, "Photo Talk", LocalDate.now(), "Canteen", EventType.TALK, null),
+        Event(5, 4, "Mountain Hike", LocalDate.now(), "Beach", EventType.OTHER, null),
+        Event(6, 5, "Movie Night", LocalDate.now(), "Pedro's House", EventType.SOCIAL, null)
     )
 
-    private val eventIdGenerator = AtomicLong(4)
+    private val eventIdGenerator = AtomicLong(7)
 
     fun listClubs(): List<ClubResponse> {
         return clubs.map { it.toResponse() }
