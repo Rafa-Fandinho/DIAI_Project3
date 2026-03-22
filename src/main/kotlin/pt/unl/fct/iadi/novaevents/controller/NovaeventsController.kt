@@ -41,15 +41,13 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
 
     override fun createEvent(clubId: Long, @Valid request: CreateEventRequest, bindingResult: BindingResult, model: Model): String {
         if(bindingResult.hasErrors()){
-            model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
             return "events/create"
         }
         val eventId = try {
             service.createEvent(clubId, request)
         } catch (e: EventAlreadyExistsException) {
-            bindingResult.rejectValue("name", "error.name", "An event with this name already exist")
-            model.addAttribute("event", request)
+            bindingResult.rejectValue("name", "error.name", "An event with this name already exists")
             model.addAttribute("clubId", clubId)
             return "events/create"
         }
@@ -74,7 +72,6 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
 
     override fun editEvent(clubId: Long, eventId: Long, @Valid request: CreateEventRequest, bindingResult: BindingResult, model: Model): String{
         if(bindingResult.hasErrors()){
-            model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
             model.addAttribute("eventId", eventId)
             return "events/edit"
@@ -82,8 +79,7 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
         try {
             service.editEvent(clubId, eventId, request)
         } catch (e: EventAlreadyExistsException) {
-            bindingResult.rejectValue("name", "error.name", "An event with this name already exist")
-            model.addAttribute("event", request)
+            bindingResult.rejectValue("name", "error.name", "An event with this name already exists")
             model.addAttribute("clubId", clubId)
             model.addAttribute("eventId", eventId)
             return "events/edit"
