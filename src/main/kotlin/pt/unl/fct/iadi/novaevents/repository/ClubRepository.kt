@@ -10,5 +10,5 @@ interface ClubRepository : JpaRepository<Club, Long> {
         FROM Event e
         WHERE e.club.id = :clubId
     """)
-    fun countEventsPerClub(clubId: Long): Long
+    fun countEventsPerClub(clubId: Long): Int
 }
