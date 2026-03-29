@@ -40,8 +40,9 @@ class NovaeventsController (
     }
 
     override fun showCreateForm(clubId: Long, model: Model): String {
-        model.addAttribute("event", CreateEventRequest( "", LocalDate.now(), null, 0, null))
+        model.addAttribute("event", CreateEventRequest( "", LocalDate.now(), null, null, null))
         model.addAttribute("clubId",clubId)
+        model.addAttribute("types", eventTypeRepository.findAll())
         return "events/create"
     }
 
@@ -57,6 +58,7 @@ class NovaeventsController (
             bindingResult.rejectValue("name", "error.name", "An event with this name already exists")
             model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
+            model.addAttribute("types", eventTypeRepository.findAll())
             return "events/create"
         }
         return "redirect:/clubs/$clubId/events/$eventId"
@@ -75,6 +77,7 @@ class NovaeventsController (
         model.addAttribute("event", form)
         model.addAttribute("clubId", clubId)
         model.addAttribute("eventId", eventId)
+        model.addAttribute("types", eventTypeRepository.findAll())
         return "events/edit"
     }
 
@@ -92,6 +95,7 @@ class NovaeventsController (
             model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
             model.addAttribute("eventId", eventId)
+            model.addAttribute("types", eventTypeRepository.findAll())
             return "events/edit"
         }
         return "redirect:/clubs/$clubId/events/$eventId"

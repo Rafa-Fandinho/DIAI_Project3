@@ -22,12 +22,12 @@
     </div>
 
     <div>
-        <label for="type">Type:</label>
-        <select id="type" name="type">
+        <label for="typeId">Type:</label>
+        <select id="typeId" name="typeId">
             <option value="">All</option>
             <option th:each="t : ${types}"
-                    th:value="${t}"
-                    th:text="${t}">
+                    th:value="${t.id}"
+                    th:text="${t.name}">
             </option>
         </select>
     </div>
@@ -56,7 +56,7 @@
     <tbody>
     <tr th:each="event : ${events}">
         <td th:text="${event.name}"></td>
-        <td th:text="${event.club.id}"></td>
+        <td th:text="${event.club.name}"></td>
         <td th:text="${event.date}"></td>
         <td th:text="${event.type.name}"></td>
         <td th:text="${event.location}"></td>

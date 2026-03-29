@@ -24,15 +24,14 @@
         <td th:text="${c.first.name}"></td>
         <td th:text="${c.first.category}"></td>
         <td th:text="${c.second}"></td>
-        <td th:text="${club.category}"></td>
         <td>
             <details>
                 <summary>Show</summary>
-                <span th:text="${club.description}"></span>
+                <span th:text="${c.first.description}"></span>
             </details>
         </td>
         <td>
-            <a th:href="@{/clubs/{id}(id=${club.id})}">
+            <a th:href="@{/clubs/{id}(id=${c.first.id})}">
                 <button>View Details</button>
             </a>
         </td>
