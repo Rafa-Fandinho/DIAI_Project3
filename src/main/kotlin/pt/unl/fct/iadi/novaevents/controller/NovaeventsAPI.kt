@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import pt.unl.fct.iadi.novaevents.controller.dto.CreateEventRequest
-import pt.unl.fct.iadi.novaevents.model.EventType
 import java.time.LocalDate
 
 @RequestMapping
@@ -28,8 +27,10 @@ interface NovaeventsAPI {
 
     @GetMapping("/events")
     fun listEvents(
-        @RequestParam(required = false) type: EventType?,
+        @RequestParam(required = false) typeId: Long?,
         @RequestParam(required = false) clubId: Long?,
+        @RequestParam(required = false) from: LocalDate?,
+        @RequestParam(required = false) to: LocalDate?,
         model: Model
     ): String
 

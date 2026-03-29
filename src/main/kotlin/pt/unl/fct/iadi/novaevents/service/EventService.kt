@@ -1,32 +1,19 @@
 package pt.unl.fct.iadi.novaevents.service
 
 import org.springframework.stereotype.Service
-import pt.unl.fct.iadi.novaevents.controller.dto.ClubDetailResponse
-import pt.unl.fct.iadi.novaevents.controller.dto.ClubResponse
 import pt.unl.fct.iadi.novaevents.controller.dto.CreateEventRequest
-import pt.unl.fct.iadi.novaevents.controller.dto.EventDetailResponse
-import pt.unl.fct.iadi.novaevents.controller.dto.EventResponse
-import pt.unl.fct.iadi.novaevents.model.Club
-import pt.unl.fct.iadi.novaevents.model.ClubCategory
 import pt.unl.fct.iadi.novaevents.model.Event
-import pt.unl.fct.iadi.novaevents.model.EventType
 import pt.unl.fct.iadi.novaevents.repository.ClubRepository
 import pt.unl.fct.iadi.novaevents.repository.EventRepository
 import pt.unl.fct.iadi.novaevents.repository.EventTypeRepository
 import java.time.LocalDate
-import java.util.concurrent.atomic.AtomicLong
 
 @Service
-class NovaeventsService(
+class EventService(
     private val clubRepository: ClubRepository,
     private val eventRepository: EventRepository,
     private val eventTypeRepository : EventTypeRepository
 ) {
-    fun listClubs(): List<Club> = clubRepository.findAll()
-
-    fun viewClubDetails(clubId: Long): Club = clubRepository.findById(clubId)
-        .orElseThrow { ClubNotFoundException(clubId) }
-
     fun listEvents(clubId: Long?, typeId: Long?, from: LocalDate?, to: LocalDate?): List<Event>{
         val type = typeId?.let {
             eventTypeRepository.findById(it)
@@ -60,8 +47,8 @@ class NovaeventsService(
         }
         val club = clubRepository.findById(clubId)
             .orElseThrow { ClubNotFoundException(clubId) }
-        val type = eventTypeRepository.findByName(request.type.name)
-            ?: throw EventTypeNotFoundException(request.type.id)
+        val type = eventTypeRepository.findById(request.typeId!!)
+            .orElseThrow { EventTypeNotFoundException(request.typeId) }
         val event = Event(
             club = club,
             name = request.name,
@@ -78,8 +65,8 @@ class NovaeventsService(
         if(eventRepository.existsByNameIgnoreCaseAndIdNot(request.name,eventId)){
             throw EventAlreadyExistsException(request.name)
         }
-        val type = eventTypeRepository.findByName(request.type.name)
-            ?: throw EventTypeNotFoundException(request.type.id)
+        val type = eventTypeRepository.findById(request.typeId!!)
+            .orElseThrow { EventTypeNotFoundException(request.typeId) }
         val updated = existing.copy(
             name = request.name,
             date = request.date,

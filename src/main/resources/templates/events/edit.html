@@ -31,13 +31,13 @@
 
     <div>
         <label for="type">Type:</label>
-        <select id="type" th:field="*{type}">
+        <select id="type" th:field="*{typeId}">
             <option th:each="t : ${T(pt.unl.fct.iadi.novaevents.model.EventType).values()}"
                     th:value="${t}"
                     th:text="${t}">
             </option>
         </select>
-        <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+        <div th:if="${#fields.hasErrors('type')}" th:errors="*{typeId}"></div>
     </div>
 
     <div>

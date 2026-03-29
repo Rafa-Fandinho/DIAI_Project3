@@ -20,8 +20,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="club : ${clubs}">
-        <td th:text="${club.name}"></td>
+    <tr th:each="c : ${clubs}">
+        <td th:text="${c.first.name}"></td>
+        <td th:text="${c.first.category}"></td>
+        <td th:text="${c.second}"></td>
         <td th:text="${club.category}"></td>
         <td>
             <details>

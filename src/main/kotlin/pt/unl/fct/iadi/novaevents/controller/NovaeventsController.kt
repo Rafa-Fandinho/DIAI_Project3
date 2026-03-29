@@ -5,36 +5,42 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import pt.unl.fct.iadi.novaevents.controller.dto.CreateEventRequest
-import pt.unl.fct.iadi.novaevents.model.EventType
+import pt.unl.fct.iadi.novaevents.repository.EventTypeRepository
+import pt.unl.fct.iadi.novaevents.service.ClubService
 import pt.unl.fct.iadi.novaevents.service.EventAlreadyExistsException
-import pt.unl.fct.iadi.novaevents.service.NovaeventsService
+import pt.unl.fct.iadi.novaevents.service.EventService
 import java.time.LocalDate
 
 @Controller
-class NovaeventsController (private val service: NovaeventsService) : NovaeventsAPI {
+class NovaeventsController (
+    private val clubService: ClubService,
+    private val eventService: EventService,
+    private val eventTypeRepository: EventTypeRepository
+) : NovaeventsAPI {
     override fun listClubs(model: Model): String {
-        model.addAttribute("clubs",service.listClubs())
+        model.addAttribute("clubs",clubService.findAllWithCounts())
         return "clubs/list"
     }
 
     override fun viewClubDetails(clubId: Long, model: Model): String {
-        model.addAttribute("club",service.viewClubDetails(clubId))
+        model.addAttribute("club",clubService.findById(clubId))
         return "clubs/detail"
     }
 
-    override fun listEvents(type: EventType?, clubId: Long?, model: Model): String {
-        model.addAttribute("events", service.listEvents(type, clubId))
-        model.addAttribute("clubs", service.listClubs())
+    override fun listEvents(typeId: Long?, clubId: Long?, from: LocalDate?, to: LocalDate?, model: Model): String {
+        model.addAttribute("events", eventService.listEvents(clubId, typeId, from, to))
+        model.addAttribute("clubs", clubService.findAll())
+        model.addAttribute("types", eventTypeRepository.findAll())
         return "events/list"
     }
 
     override fun viewEventDetails(clubId: Long, eventId: Long, model: Model): String {
-        model.addAttribute("event",service.viewEventDetails(clubId, eventId))
+        model.addAttribute("event",eventService.viewEventDetails(eventId))
         return "events/detail"
     }
 
     override fun showCreateForm(clubId: Long, model: Model): String {
-        model.addAttribute("event", CreateEventRequest( "", LocalDate.now(), null, EventType.WORKSHOP, null))
+        model.addAttribute("event", CreateEventRequest( "", LocalDate.now(), null, 0, null))
         model.addAttribute("clubId",clubId)
         return "events/create"
     }
@@ -46,7 +52,7 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
             return "events/create"
         }
         val eventId = try {
-            service.createEvent(clubId, request)
+            eventService.createEvent(clubId, request)
         } catch (e: EventAlreadyExistsException) {
             bindingResult.rejectValue("name", "error.name", "An event with this name already exists")
             model.addAttribute("event", request)
@@ -57,13 +63,13 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
     }
 
     override fun showEditForm(clubId: Long, eventId: Long, model: Model): String {
-        val event = service.viewEventDetails(clubId,eventId)
+        val event = eventService.viewEventDetails(eventId)
 
         val form = CreateEventRequest(
             name = event.name,
             date = event.date,
             location = event.location,
-            type = event.type,
+            typeId = event.type.id,
             description = event.description
         )
         model.addAttribute("event", form)
@@ -80,7 +86,7 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
             return "events/edit"
         }
         try {
-            service.editEvent(clubId, eventId, request)
+            eventService.editEvent(eventId, request)
         } catch (e: EventAlreadyExistsException) {
             bindingResult.rejectValue("name", "error.name", "An event with this name already exists")
             model.addAttribute("event", request)
@@ -92,12 +98,12 @@ class NovaeventsController (private val service: NovaeventsService) : Novaevents
     }
 
     override fun confirmDelete(clubId: Long, eventId: Long, model: Model): String {
-        model.addAttribute("event",service.viewEventDetails(clubId, eventId))
+        model.addAttribute("event",eventService.viewEventDetails(eventId))
         return "events/delete"
     }
 
     override fun deleteEvent(clubId: Long, eventId: Long): String {
-        service.deleteEvent(clubId, eventId)
+        eventService.deleteEvent(eventId)
         return "redirect:/clubs/$clubId"
     }
 

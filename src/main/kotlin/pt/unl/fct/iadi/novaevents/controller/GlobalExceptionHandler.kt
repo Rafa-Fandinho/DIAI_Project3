@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import pt.unl.fct.iadi.novaevents.service.ClubNotFoundException
 import pt.unl.fct.iadi.novaevents.service.EventAlreadyExistsException
 import pt.unl.fct.iadi.novaevents.service.EventNotFoundException
+import pt.unl.fct.iadi.novaevents.service.EventTypeNotFoundException
 
 @ControllerAdvice
 class GlobalExceptionHandler {
@@ -28,6 +29,13 @@ class GlobalExceptionHandler {
     @ExceptionHandler(EventNotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleEventNotFound(ex: EventNotFoundException, model: Model): String {
+        model.addAttribute("error", ex.message)
+        return "error/404"
+    }
+
+    @ExceptionHandler(EventTypeNotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun handleEventTypeNotFound(ex: EventTypeNotFoundException, model: Model): String {
         model.addAttribute("error", ex.message)
         return "error/404"
     }

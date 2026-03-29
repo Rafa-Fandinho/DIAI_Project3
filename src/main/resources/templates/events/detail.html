@@ -11,15 +11,15 @@
 
 <p th:text="${event.date}"></p>
 <p th:text="${event.location}"></p>
-<p th:text="${event.type}"></p>
+<p th:text="${event.type.name}"></p>
 <p th:text="${event.description}"></p>
-<p th:text="${event.clubName}"></p>
+<p th:text="${event.club.name}"></p>
 
-<a th:href="@{/clubs/{clubId}/events/{eventId}/edit(clubId=${event.clubId}, eventId=${event.id})}">
+<a th:href="@{/clubs/{clubId}/events/{eventId}/edit(clubId=${event.club.id}, eventId=${event.id})}">
     Edit
 </a>
 
-<a th:href="@{/clubs/{clubId}/events/{eventId}/delete(clubId=${event.clubId}, eventId=${event.id})}">
+<a th:href="@{/clubs/{clubId}/events/{eventId}/delete(clubId=${event.club.id}, eventId=${event.id})}">
     Delete
 </a>
 </body>
