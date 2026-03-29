@@ -6,7 +6,7 @@
     <title>Clubs List</title>
 </head>
 <body>
-<div th:replace="fragments/navbar :: body"></div>
+<div th:replace="fragments/navbar :: navbar"></div>
 
 <h1>Clubs</h1>
 
@@ -21,17 +21,17 @@
     </thead>
     <tbody>
     <tr th:each="c : ${clubs}">
-        <td th:text="${c.first.name}"></td>
-        <td th:text="${c.first.category}"></td>
-        <td th:text="${c.second}"></td>
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.category}"></td>
+        <td th:text="${c.eventCount}"></td>
         <td>
             <details>
                 <summary>Show</summary>
-                <span th:text="${c.first.description}"></span>
+                <span th:text="${c.description}"></span>
             </details>
         </td>
         <td>
-            <a th:href="@{/clubs/{id}(id=${c.first.id})}">
+            <a th:href="@{/clubs/{id}(id=${c.id})}">
                 <button>View Details</button>
             </a>
         </td>

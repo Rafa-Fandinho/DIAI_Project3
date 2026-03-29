@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.Query
 import pt.unl.fct.iadi.novaevents.model.Club
 
 interface ClubRepository : JpaRepository<Club, Long> {
-
     @Query("""
-        SELECT c, COUNT(e)
+        SELECT c.id, COUNT(e)
         FROM Club c LEFT JOIN Event e ON e.club = c
-        GROUP BY c
+        WHERE c.id = :clubId
+        GROUP BY c.id
     """)
-    fun findClubsWithEventCount(): List<Array<Any>>
+    fun countEventsPerClub(clubId: Long?): List<Array<Any>>
 }
