@@ -50,6 +50,7 @@ class NovaeventsController (
         if(bindingResult.hasErrors()){
             model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
+            model.addAttribute("types", eventTypeRepository.findAll())
             return "events/create"
         }
         val eventId = try {
@@ -86,6 +87,7 @@ class NovaeventsController (
             model.addAttribute("event", request)
             model.addAttribute("clubId", clubId)
             model.addAttribute("eventId", eventId)
+            model.addAttribute("types", eventTypeRepository.findAll())
             return "events/edit"
         }
         try {

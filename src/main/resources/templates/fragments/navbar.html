@@ -5,13 +5,15 @@
     <title>Navigation Bar</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" th:href="@{/clubs}">Campus Clubs</a>
+<div th:fragment="body">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" th:href="@{/clubs}">Campus Clubs</a>
 
-    <div class="navbar-nav">
-        <a class="nav-link" th:href="@{/clubs}">Clubs</a>
-        <a class="nav-link" th:href="@{/events}">Events</a>
-    </div>
-</nav>
+        <div class="navbar-nav">
+            <a class="nav-link" th:href="@{/clubs}">Clubs</a>
+            <a class="nav-link" th:href="@{/events}">Events</a>
+        </div>
+    </nav>
+</div>
 </body>
 </html>
