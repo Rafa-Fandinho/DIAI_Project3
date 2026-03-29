@@ -8,7 +8,6 @@ import pt.unl.fct.iadi.novaevents.repository.ClubRepository
 @Service
 class ClubService(
     private val clubRepository: ClubRepository,
-    private val eventService: EventService
 ) {
     fun findAll(): List<Club> = clubRepository.findAll()
 
@@ -17,7 +16,7 @@ class ClubService(
     fun findAllWithCounts(): List<ClubResponse> {
         return clubRepository.findAll()
             .map { club ->
-                val count = clubRepository.countEventsPerClub(club.id).size
+                val count = clubRepository.countEventsPerClub(club.id!!)
                 ClubResponse(
                     id = club.id!!,
                     name = club.name,

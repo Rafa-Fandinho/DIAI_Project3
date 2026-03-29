@@ -6,10 +6,9 @@ import pt.unl.fct.iadi.novaevents.model.Club
 
 interface ClubRepository : JpaRepository<Club, Long> {
     @Query("""
-        SELECT c.id, COUNT(e)
-        FROM Club c LEFT JOIN Event e ON e.club = c
-        WHERE c.id = :clubId
-        GROUP BY c.id
+        SELECT COUNT(e)
+        FROM Event e
+        WHERE e.club.id = :clubId
     """)
-    fun countEventsPerClub(clubId: Long?): List<Array<Any>>
+    fun countEventsPerClub(clubId: Long): Long
 }
